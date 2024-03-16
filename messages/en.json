@@ -1,0 +1,11 @@
+{
+  "Index": {
+    "pleasedontspam": "Please don't spam too much. I'm paying for OpenAI API usage :sadcat:"
+  },
+  "Prompt": {
+    "writehere": "Write your prompt here sweetie",
+    "buttonsubmit": "Ask it",
+    "onemoment": "One moment",
+    "askagain": "Ask again"
+  }
+}
