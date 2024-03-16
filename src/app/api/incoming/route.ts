@@ -50,7 +50,7 @@ async function handler(
       }, botResponse.text);
 
       if (haha) {
-        g.play("https://github.com/phille97/mansplain/raw/main/public/haha-effect.mp3");
+        g.play("https://github.com/phille97/mansplain/raw/main/public/hehe-effect.mp3");
       }
       if (sigh) {
         g.play("https://github.com/phille97/mansplain/raw/main/public/sigh-effect.mp3");
@@ -73,7 +73,7 @@ async function handler(
       }, botResponse.text);
 
       if (haha) {
-        twiml.play("https://github.com/phille97/mansplain/raw/main/public/haha-effect.mp3");
+        twiml.play("https://github.com/phille97/mansplain/raw/main/public/hehe-effect.mp3");
       }
       if (sigh) {
         twiml.play("https://github.com/phille97/mansplain/raw/main/public/sigh-effect.mp3");
