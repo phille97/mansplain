@@ -11,6 +11,15 @@ const uidKey = (uid: string) : string => {
   return `experience:${uid}`
 }
 
+export const reset = async (uid: string) => {
+  await set(uidKey(uid), {
+    uid: uid,
+    human: {},
+    previousCalls: [],
+    currentCall: undefined
+  });
+}
+
 export const getExperience = async (uid: string) => {
   let exp: Experience | null = (await get(uidKey(uid))) as Experience | null
 
@@ -41,8 +50,8 @@ Here's some rules you must follow:
 const initCommandsPrompt = `You can operate the telephone by issuing commands, when you deem fit to issue a command you will put the command on the end of your response on a new line with no trailing dots, commas or prefixes.
 Here are the commands you are able to issue and a short description of what they do:
 * "[HANGUP]" Disconnect the call.
-* "[SIGH]" Play a sound of a man sighing
-* "[HAHA]" Play a sound of a man laughing`
+* "[SIGH]" Play a sound of a man sighing`
+//* "[HAHA]" Play a sound of a man laughing`
 
 const generatePrompt = (exp: Experience) => {
   let p = `${initStartPrompt}\n\n${initCommandsPrompt}`;

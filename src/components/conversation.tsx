@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from 'next/navigation'
 
 import type { Experience } from "@/lib/domain";
-import { getExperience, humanSay } from "@/lib/service";
+import { getExperience, humanSay, reset } from "@/lib/service";
 import { Prompt } from "@/components/prompt";
 
 export default function Conversation() {
@@ -92,6 +92,10 @@ export default function Conversation() {
           await refreshExp()
         }} />
       </div>
+      <div><button onClick={async () => {
+        await reset(uid);
+        await refreshExp();
+      }}>Reset</button></div>
     </div>
   );
 }
