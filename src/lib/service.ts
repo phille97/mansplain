@@ -71,7 +71,7 @@ const generatePrompt = (exp: Experience) => {
     p += `\n* (${l.who.toUpperCase()}) ${l.text}`
   }
 
-  p += "\n\nProvide your next response, keep it a short one-paragraph sentence"
+  p += "\n\nProvide your next response, keep it a short one-paragraph sentence. Only say the response and any commands, do not add anything else"
 
   console.log(p)
 
