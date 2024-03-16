@@ -6,18 +6,29 @@ import { getExperience, humanSay } from "@/lib/service";
 const twilioLocale = "en-GB";
 const twilioVoice = "Google.en-GB-Standard-D";
 
+
+const xmlResponse = (xml: string) : NextResponse => {
+  const resp = new NextResponse(xml)
+  resp.headers.set("Content-Type", "application/xml")
+  return resp
+}
+
+const errorResponse = (statusCode: number, what: string) : NextResponse => {
+  return new NextResponse(what, { status: statusCode })
+}
+
 async function handler(
   req: NextRequest,
 ) {
   const searchParams = req.nextUrl.searchParams
   const uid = searchParams.get('Caller')
   if (!uid) {
-    throw new Error("no Caller")
+    return errorResponse(400, "no Caller")
   }
 
   const callsid = searchParams.get('CallSid')
   if (!callsid) {
-    throw new Error("no CallSid")
+    return errorResponse(400, "no CallSid")
   }
 
   let speechInput = searchParams.get('SpeechResult');
@@ -29,88 +40,73 @@ async function handler(
 
   const exp = await getExperience(uid)
 
+  let speechOutput = "Welcome"
+  if (exp.previousCalls && exp.previousCalls.length > 0) {
+    speechOutput += ", what do you want this time?"
+  } else {
+    speechOutput += " to the mansplain bot. Ask your question now."
+  }
+
+  type patchFunc = (x: any) => void
+  let afterBotResponse: patchFunc[] = []
+
   if (speechInput) {
     const botResponse = await humanSay(uid, callsid, speechInput)
 
     const hangup = botResponse.commands.indexOf("HANGUP") !== -1
-    const haha = botResponse.commands.indexOf("HAHA") !== -1
-    const sigh = botResponse.commands.indexOf("SIGH") !== -1
 
-    if (!hangup) {
-      let twiml = new Twilio.twiml.VoiceResponse();
+    if (botResponse.commands.indexOf("HAHA") !== -1) {
+      afterBotResponse.push((t: any) => {
+        t.play("https://github.com/phille97/mansplain/raw/main/public/hehe-effect.mp3")
+      })
+    }
+    if (botResponse.commands.indexOf("SIGH") !== -1) {
+      afterBotResponse.push((t: any) => {
+        t.play("https://github.com/phille97/mansplain/raw/main/public/sigh-effect.mp3")
+      })
+    }
 
-      const g = twiml.gather({
-        input: ['speech'],
-        speechTimeout: 'auto',
-        language: twilioLocale
-      });
-      g.say({
-        language: twilioLocale,
-        voice: twilioVoice
-      }, botResponse.text);
+    speechOutput = botResponse.text;
 
-      if (haha) {
-        g.play("https://github.com/phille97/mansplain/raw/main/public/hehe-effect.mp3");
-      }
-      if (sigh) {
-        g.play("https://github.com/phille97/mansplain/raw/main/public/sigh-effect.mp3");
-      }
-
-      twiml.say({
-        language: twilioLocale,
-        voice: twilioVoice
-      },'Ok bye');
-
-      const resp = new NextResponse(twiml.toString())
-      resp.headers.set("Content-Type", "application/xml")
-      return resp
-    } else {
+    if (hangup) {
       let twiml = new Twilio.twiml.VoiceResponse();
 
       twiml.say({
         language: twilioLocale,
         voice: twilioVoice
-      }, botResponse.text);
+      }, speechOutput);
 
-      if (haha) {
-        twiml.play("https://github.com/phille97/mansplain/raw/main/public/hehe-effect.mp3");
-      }
-      if (sigh) {
-        twiml.play("https://github.com/phille97/mansplain/raw/main/public/sigh-effect.mp3");
+      for (let patch of afterBotResponse) {
+        patch(twiml)
       }
 
-      const resp = new NextResponse(twiml.toString())
-      resp.headers.set("Content-Type", "application/xml")
-      return resp
+      return xmlResponse(twiml.toString())
     }
   }
 
   let twiml = new Twilio.twiml.VoiceResponse();
+
   const g = twiml.gather({
     input: ['speech'],
     speechTimeout: 'auto',
     language: twilioLocale
   });
 
-  let p = "Welcome"
-  if (exp.previousCalls && exp.previousCalls.length > 0) {
-    p += ", what do you want this time?"
-  } else {
-    p += " to the mansplain bot. Ask your question now."
-  }
   g.say({
     language: twilioLocale,
     voice: twilioVoice
-  }, p);
+  }, speechOutput);
+
+  for (let patch of afterBotResponse) {
+    patch(g)
+  }
 
   twiml.say({
     language: twilioLocale,
     voice: twilioVoice
   },'Ok bye');
 
-  const resp = new NextResponse(twiml.toString())
-  resp.headers.set("Content-Type", "application/xml")
-  return resp
+  return xmlResponse(twiml.toString())
 }
 
 

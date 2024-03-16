@@ -4,7 +4,7 @@ import openai from "openai";
 import { randomUUID, createHash } from "crypto";
 
 // import {uploadToS3} from "./s3";
-import {set, get} from "./db";
+import {set, get} from "../db";
 
 
 const openaiInstance = new openai.OpenAI({

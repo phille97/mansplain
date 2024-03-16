@@ -3,7 +3,7 @@
 import { randomUUID } from "crypto";
 
 import { Experience, Call } from "./domain";
-import { aiprompt } from "./mistralai";
+import { aiprompt } from "./ai/mistralai";
 import { get, set } from "./db";
 
 
