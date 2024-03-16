@@ -20,7 +20,12 @@ async function handler(
     throw new Error("no CallSid")
   }
 
-  const speechInput = searchParams.get('SpeechResult')
+  let speechInput = searchParams.get('SpeechResult');
+  if (req.method === 'POST') {
+    const formData = await req.formData()
+    const formDataInput = formData.get("SpeechResult")
+    speechInput = formDataInput ? formDataInput.toString() : speechInput
+  }
 
   const exp = await getExperience(uid)
 
