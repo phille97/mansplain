@@ -43,9 +43,46 @@ export default function Conversation() {
 
   return (
     <div>
-      <h2>Stored state</h2>
-      <pre>{JSON.stringify(exp, undefined, 2)}</pre>
-      <h2>Last bot response</h2>
+      <p><strong>UID:</strong> {exp.uid}</p>
+      <p><strong>History:</strong></p>
+      <div>
+        {exp.previousCalls.map(callSummary => (
+          <div key={callSummary.eid} style={{
+            border: '1px solid gray',
+            marginBottom: '1em',
+            padding: '0 .75em'
+          }}>
+            <p>
+              <small>{callSummary.eid} <strong>/</strong> {(new Date(callSummary.when)).toISOString()}</small>
+            </p>
+            <p><strong>Summary:</strong> {callSummary.summary}</p>
+            <p>
+              <strong>Log:</strong>
+              <table>
+                {callSummary.call.log.map((entry, i) => (
+                  <tr key={i}><td style={{
+                    color: entry.who === "bot" ? 'blue' : 'orange'
+                  }}><strong>{entry.who}</strong></td><td>{entry.text}</td></tr>
+                ))}
+              </table>
+            </p>
+          </div>
+        ))}
+      </div>
+      {exp.currentCall ? (
+        <div>
+          <p style={{ color: 'green' }}>Ongoing call</p>
+          <p>
+            <table>
+              {exp.currentCall.log.map((entry, i) => (
+                <tr key={i}><td style={{
+                  color: entry.who === "bot" ? 'blue' : 'orange'
+                }}><strong>{entry.who}</strong></td><td>{entry.text}</td></tr>
+              ))}
+            </table>
+          </p>
+        </div>
+      ) : (<p style={{ color: 'red' }}>No ongoing call</p>)}
       <pre>{JSON.stringify(lastResponse, undefined, 2)}</pre>
       <div>
         <Prompt complete={async (stuff) => {
