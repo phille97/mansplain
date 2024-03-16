@@ -14,7 +14,9 @@
     "next-intl": "^3.7.0",
     "openai": "^4.27.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "redis": "^4.6.13",
+    "twilio": "^5.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",

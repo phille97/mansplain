@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import {NextIntlClientProvider, useMessages} from 'next-intl';
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -12,18 +11,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  params: {locale}
 }: Readonly<{
   children: React.ReactNode;
-  params: {locale: string};
 }>) {
-  const messages = useMessages();
   return (
-    <html lang={locale}>
+    <html>
       <body className={inter.className}>
-        <NextIntlClientProvider messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        {children}
       </body>
     </html>
   );
