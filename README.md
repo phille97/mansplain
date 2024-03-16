@@ -1,17 +1,8 @@
 # manspl**AI**n
 
-developed on a cold february evening using OpenAI GPT 3.5 turbo and TTS
-
 explains a topic for you in a condecending manner
 
-## Prompts
+## More info
 
-**English**
-```
-Write a short one-line paragraph, mansplained to me in a condescending way and start the sentence with "Listen sweetie": {input}
-```
-
-**Swedish**
-```
-Skriv en kort en rads paragraf, mansplainat för mig på ett nedlåtande sätt samt börja meningen med "Lilla gumman": {input}
-```
+* [google presentation with demo video](https://docs.google.com/presentation/d/1SEjyu-UAFtgdNfyGOQSGVOoF_pi_bsSruj4JM6pLM38/edit?usp=sharing)
+* [miro board with diagrams and stuff](https://miro.com/app/board/uXjVN4DilHQ=)
