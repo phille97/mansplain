@@ -36,7 +36,7 @@ async function handler(
     const haha = botResponse.commands.indexOf("HAHA") !== -1
     const sigh = botResponse.commands.indexOf("SIGH") !== -1
 
-    if (hangup) {
+    if (!hangup) {
       let twiml = new Twilio.twiml.VoiceResponse();
 
       const g = twiml.gather({

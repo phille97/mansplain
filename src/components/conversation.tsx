@@ -49,7 +49,9 @@ export default function Conversation() {
       <pre>{JSON.stringify(lastResponse, undefined, 2)}</pre>
       <div>
         <Prompt complete={async (stuff) => {
+          setLoading(true);
           setLastResponse(await humanSay(uid, null, stuff));
+          setLoading(false);
           await refreshExp()
         }} />
       </div>
