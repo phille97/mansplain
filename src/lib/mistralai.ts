@@ -7,9 +7,9 @@ const client = new MistralClient(apiKey);
 
 export const aiprompt = async (prompt: string) : Promise<string | null> => {
   const chatResponse = await client.chat({
-    model: 'mistral-large-latest',
+    //model: 'mistral-large-latest',
     //model: 'mistral-medium-latest',
-    //model: 'mistral-small-latest',
+    model: 'mistral-small-latest',
     messages: [
       {
         role: 'user',
