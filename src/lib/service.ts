@@ -125,6 +125,7 @@ export const humanSay = async (uid: string, callsid: string | null, text: string
       eid: exp.currentCall.eid,
       when: exp.currentCall.initiated,
       summary: botSummarizeReply,
+      call: exp.currentCall,
     })
     exp.currentCall = undefined
   }
@@ -166,6 +167,7 @@ export const humanSay = async (uid: string, callsid: string | null, text: string
       eid: exp.currentCall.eid,
       when: exp.currentCall.initiated,
       summary: botSummarizeReply,
+      call: exp.currentCall,
     })
     exp.currentCall = undefined
   }

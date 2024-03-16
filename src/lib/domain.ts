@@ -8,6 +8,7 @@ export type CallSummary = {
   eid: string;
   when: number;
   summary: string;
+  call: Call;
 }
 
 export type Log = {
