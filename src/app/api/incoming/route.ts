@@ -93,7 +93,7 @@ async function handler(
   });
 
   let p = "Welcome"
-  if (exp.previousCalls) {
+  if (exp.previousCalls && exp.previousCalls.length > 0) {
     p += ", what do you want this time?"
   } else {
     p += " to the mansplain bot. Ask your question now."
