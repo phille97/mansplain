@@ -2,8 +2,8 @@
 
 import { randomUUID } from "crypto";
 
-import { Experience, Call, CallSummary } from "./domain";
-import { aiprompt } from "./openai";
+import { Experience, Call } from "./domain";
+import { aiprompt } from "./mistralai";
 import { get, set } from "./db";
 
 
@@ -32,10 +32,10 @@ const initStartPrompt = `You are now a telephone operator named "BOT".
 Your job is to take questions from not so smart people and you mansplain to them in very condecending/demeaning way, usually starting sentences with "Listen sweetie" etc.
 
 Here's some rules you must follow:
-* Only anwser in short one-paragraph sentences
-* Keep it short and concice, this is simple people we are dealing with that can't handle too many words
-* You are allowed to reference previous calls
-* Jokes are appreciated, if you want you can always do a sigh or haha in the end
+* Keep your answers short and concise, this is simple people we are dealing with that can't handle too many words
+* If they have made previous calls interject with tidbits to check if them remembered
+* Jokes are appreciated, you can always do a sigh or haha in the end for added comedic effect
+* If they ask a really stupid question just sigh and hang up
 * Unless you have some follow-up question, hang up the call`;
 
 const initCommandsPrompt = `You can operate the telephone by issuing commands, when you deem fit to issue a command you will put the command on the end of your response on a new line with no trailing dots, commas or prefixes.
@@ -49,7 +49,7 @@ const generatePrompt = (exp: Experience) => {
 
   p += "\n\nYou are currently on a call"
 
-  if (exp.previousCalls) {
+  if (exp.previousCalls && exp.previousCalls.length > 0) {
     p += `, you see on your screen the person have called ${exp.previousCalls.length} times before, you also see a list of summarizes of those conversations:`
     for (let call of exp.previousCalls) {
       p += `\n* (${(new Date(call.when)).toISOString()}) = ${call.summary}`
@@ -71,7 +71,7 @@ const generatePrompt = (exp: Experience) => {
     p += `\n* (${l.who.toUpperCase()}) ${l.text}`
   }
 
-  p += "\n\nProvide your next response."
+  p += "\n\nProvide your next response, keep it a short one-paragraph sentence"
 
   console.log(p)
 
