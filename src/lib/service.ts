@@ -114,7 +114,7 @@ export const humanSay = async (uid: string, callsid: string | null, text: string
 
   let callid = callsid ? callsid : randomUUID()
 
-  if (exp.currentCall && exp.currentCall.eid !== callid) {
+  if (exp.currentCall && callsid && exp.currentCall.eid !== callid) {
     const botSummarizeReply = await aiprompt(generateSummarizePrompt(exp.currentCall));
 
     if (!botSummarizeReply) {
