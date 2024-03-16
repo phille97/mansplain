@@ -20,8 +20,8 @@ export const aiprompt = async (prompt: string) : Promise<string | null> => {
         content: prompt
       }
     ],
-		model: 'gpt-3.5-turbo',
-    //model: 'gpt-4',
+		//model: 'gpt-3.5-turbo',
+    model: 'gpt-4',
 	});
 
   return textReply.choices[0].message.content
